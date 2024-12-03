@@ -23,23 +23,23 @@ data class FoldState(
 
 fun conditionMet(list: List<Int>) =
     list.foldIndexed(
-        FoldState(true, Direction.UNDETERMINED),
-        { index, state, number ->
-            if (!state.success) { state }
-            else {
-                val firstRun = index == 0
-                val distance = number - state.lastNumber
-                val direction = when {
-                    firstRun -> Direction.UNDETERMINED
-                    distance > 0 -> Direction.UP
-                    else -> Direction.DOWN
-                }
-                val distanceAllowed = abs(distance) in 1..3
-                val directionAllowed = direction == state.direction || state.direction == Direction.UNDETERMINED
-                FoldState(firstRun || (directionAllowed && distanceAllowed), direction, number)
+        FoldState(true, Direction.UNDETERMINED)
+    ) { index, state, number ->
+        if (!state.success) {
+            state
+        } else {
+            val firstRun = index == 0
+            val distance = number - state.lastNumber
+            val direction = when {
+                firstRun -> Direction.UNDETERMINED
+                distance > 0 -> Direction.UP
+                else -> Direction.DOWN
             }
+            val distanceAllowed = abs(distance) in 1..3
+            val directionAllowed = direction == state.direction || state.direction == Direction.UNDETERMINED
+            FoldState(firstRun || (directionAllowed && distanceAllowed), direction, number)
         }
-    ).success
+    }.success
 
 fun taskOne(data: Data): Int = data.map { conditionMet(it) }.sumOf { (if (it) 1 else 0) as Int }
 

@@ -20,10 +20,12 @@ kotlin {
     jvmToolchain(21)
 }
 
-tasks.register<JavaExec>("task01") {
-    //dependsOn "classes"
-    group = "application"
-    description = "task 1"
-    mainClass = "year2024.task01.MainKt"
-    classpath = sourceSets.main.get().runtimeClasspath
+for (i in 1..2) {
+    val taskName = "task${i.toString().padStart(2,'0')}"
+    tasks.register<JavaExec>(taskName) {
+        group = "application"
+        description = taskName
+        mainClass = "year2024.$taskName.MainKt"
+        classpath = sourceSets.main.get().runtimeClasspath
+    }
 }
